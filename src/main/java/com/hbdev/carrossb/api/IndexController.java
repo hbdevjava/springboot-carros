@@ -38,6 +38,17 @@ public class IndexController {
 	public String getCarByTipo(@PathVariable  String  tipo) {
 		return "Modelo do Carro: " + tipo;
 	}
+	
+	@PostMapping("/login")
+	private String login1(@RequestParam String login,@RequestParam String senha) {
+		return "Login:" + login + " Senha:" + senha;
+	}
+	
+	
+	
+	
+	
+	
 		
 		
 		
