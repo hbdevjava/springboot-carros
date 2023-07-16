@@ -2,10 +2,10 @@ package com.hbdev.carrossb.api;
 
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,20 +30,41 @@ public class CarrosController {
 	
 	@GetMapping()
 	private ResponseEntity<Iterable<Carro>> get() {
-		return ResponseEntity.ok(carroService.getCarros());
+		return ResponseEntity.ok(carroService.getCarros());//se passar um obj pra dentro do Ok nao precisa o .build()
 		//return new ResponseEntity<>(carroService.getCarros(),HttpStatus.OK);
 		
 	}
 	
 	@GetMapping("/{id}")
-	public Optional<Carro> getById(@PathVariable Long id){
-		return carroService.getCarroById(id);
+	public ResponseEntity<Carro> getById(@PathVariable Long id){
+		Optional<Carro> carro = carroService.getCarroById(id);
+		
+		return carro.map(ResponseEntity::ok)//-> carro.map(c -> ResponseEntity.ok(c))
+				.orElse(ResponseEntity.notFound().build());
+		
+//		(TERNARIO)
+//		return carro.isPresent() ? 
+//				ResponseEntity.ok(carro.get()) :
+//					ResponseEntity.notFound().build();
+		
+//		(IF)
+//		if(carro.isPresent()){
+//			return ResponseEntity.ok(carro.get());
+//		}else {
+//			return ResponseEntity.notFound().build();
+//		}
 	}
 	
 	@GetMapping("/tipo/{tipo}")
-	public Iterable<Carro> getCarrosByTipo(@PathVariable String tipo){
-		return carroService.getCarrosByTipo(tipo);
+	public ResponseEntity getCarrosByTipo(@PathVariable String tipo){
+		List<Carro> carros = carroService.getCarrosByTipo(tipo);
+		return carros.isEmpty() ? 
+				ResponseEntity.noContent().build() :
+					ResponseEntity.ok(carros);
 	}
+		
+		
+		
 	
 	@PostMapping
 	public String postCarro(@RequestBody Carro carro) {//-> @RequestBody sem ele resultado da NULL
