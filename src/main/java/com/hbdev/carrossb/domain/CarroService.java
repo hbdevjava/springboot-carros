@@ -38,6 +38,10 @@ public class CarroService {
 		return carros;
 	}
 
+	public Carro savaCarro(Carro carro) {
+		return carroRepository.save(carro);
+	}
 
+	
 
 }
