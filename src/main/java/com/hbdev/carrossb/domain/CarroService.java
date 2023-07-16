@@ -42,21 +42,29 @@ public class CarroService {
 
 	public Carro upDateCarro(Long id, Carro carro) {
 		Assert.notNull(id, "Nao é Possivel Atualizar o registro");
-		
+
 		Optional<Carro> optional = getCarroById(id);
-		if(optional.isPresent()) {
+		if (optional.isPresent()) {
 			Carro novoCarro = optional.get();
 			novoCarro.setName(carro.getName());
 			novoCarro.setTipo(carro.getTipo());
 			System.out.println("Carro id: " + novoCarro.getId());
-			
+
 			carroRepository.save(novoCarro);
 			return novoCarro;
-		}else {
+		} else {
 			throw new RuntimeException("Nao é Possivel Atualizar o registro");
 		}
-		
-		
+
+	}
+
+	public void deleteById(Long id) {
+		Optional<Carro> optional = getCarroById(id);
+		if (optional.isPresent()) {
+			carroRepository.deleteById(id);
+		}
+
+
 	}
 
 //	public Carro upDateCarro(Long id, Carro carro) {
