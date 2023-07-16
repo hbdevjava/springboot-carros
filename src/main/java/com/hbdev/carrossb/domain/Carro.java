@@ -16,6 +16,8 @@ public class Carro {
 	@Column(name = "nome")
 	private String name;
 	
+	private String tipo;
+	
 	public Carro() {
 		
 	}
@@ -23,6 +25,7 @@ public class Carro {
 	public Carro(Long id, String name) {
 		this.id = id;
 		this.name = name;
+		
 	}
 
 	public Long getId() {
@@ -39,6 +42,16 @@ public class Carro {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	@Override

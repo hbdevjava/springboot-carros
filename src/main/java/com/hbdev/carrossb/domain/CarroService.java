@@ -23,6 +23,11 @@ public class CarroService {
 		return carroRepository.findById(id);
 	}
 
+	public Iterable<Carro> getCarrosByTipo(String tipo) {
+		return carroRepository.findByTipo(tipo);
+	}
+	
+	
 	public List<Carro> getCarfake() {
 		List<Carro> carros = new ArrayList<>();
 		// SOBRE O L: tem que colocar o "L" caso não java entendo como inteiro
@@ -32,5 +37,7 @@ public class CarroService {
 
 		return carros;
 	}
+
+
 
 }

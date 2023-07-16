@@ -20,6 +20,7 @@ public class CarrosController {
 	@Autowired
 	CarroService carroService;
 
+	
 	@GetMapping()
 	private Iterable<Carro> get() {
 		return carroService.getCarros();
@@ -29,6 +30,11 @@ public class CarrosController {
 	@GetMapping("/{id}")
 	public Optional<Carro> getById(@PathVariable Long id){
 		return carroService.getCarroById(id);
+	}
+	
+	@GetMapping("/tipo/{tipo}")
+	public Iterable<Carro> getCarrosByTipo(@PathVariable String tipo){
+		return carroService.getCarrosByTipo(tipo);
 	}
 	
 	
