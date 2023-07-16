@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hbdev.carrossb.domain.Carro;
@@ -42,10 +41,15 @@ public class CarrosController {
 	}
 	
 	@PostMapping
-	@RequestMapping(method = { RequestMethod.POST, RequestMethod.PUT })
-	public String postPutCarro(@RequestBody Carro carro) {//-> @RequestBody sem ele resultado da NULL
+	public String postCarro(@RequestBody Carro carro) {//-> @RequestBody sem ele resultado da NULL
 		Carro c = carroService.savaCarro(carro);
 		return "Carro Salvo com sucesso: " + c.getId();
+	}
+	
+	@PutMapping("/{id}")
+	public String putCarro(@PathVariable Long id,  @RequestBody Carro carro) {//-> @RequestBody sem ele resultado da NULL
+		Carro c = carroService.upDateCarro(id, carro);
+		return "Atualizado com sucesso " + c.getId();
 	}
 	
 	
