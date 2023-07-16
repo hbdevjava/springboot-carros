@@ -2,9 +2,11 @@ package com.hbdev.carrossb.api;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +24,11 @@ public class CarrosController {
 	private Iterable<Carro> get() {
 		return carroService.getCarros();
 		
+	}
+	
+	@GetMapping("/{id}")
+	public Optional<Carro> getById(@PathVariable Long id){
+		return carroService.getCarroById(id);
 	}
 	
 	

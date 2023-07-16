@@ -2,9 +2,12 @@ package com.hbdev.carrossb.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+
 
 @Service
 public class CarroService {
@@ -14,6 +17,10 @@ public class CarroService {
 
 	public Iterable<Carro> getCarros() {
 		return carroRepository.findAll();
+	}
+	
+	public Optional<Carro> getCarroById(Long id){
+		return carroRepository.findById(id);
 	}
 
 	public List<Carro> getCarfake() {
