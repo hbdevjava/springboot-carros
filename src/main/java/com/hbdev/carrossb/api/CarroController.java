@@ -23,7 +23,7 @@ import com.hbdev.carrossb.domain.CarroService;
 
 @RestController //-> Tranforma esse obj em um web service rest
 @RequestMapping("/api/v1/carros")
-public class CarrosController {
+public class CarroController {
 	
 	@Autowired
 	CarroService carroService;
@@ -68,9 +68,9 @@ public class CarrosController {
 	
 		
 	
-	@PostMapping
+	@PostMapping()
 	public String postCarro(@RequestBody Carro carro) {//-> @RequestBody sem ele resultado da NULL
-		Carro c = carroService.savaCarro(carro);
+		Carro c = carroService.saveCarro(carro);
 		return "Carro Salvo com sucesso: " + c.getId();
 	}
 	
@@ -83,7 +83,7 @@ public class CarrosController {
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public void delete(@PathVariable Long id) {
-		carroService.deleteById(id);
+		carroService.deleteByid(id);
 		
 	}
 	
