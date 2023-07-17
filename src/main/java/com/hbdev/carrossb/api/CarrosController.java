@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hbdev.carrossb.domain.Carro;
+import com.hbdev.carrossb.domain.CarroDTO;
 import com.hbdev.carrossb.domain.CarroService;
 
 @RestController //-> Tranforma esse obj em um web service rest
@@ -29,15 +30,15 @@ public class CarrosController {
 
 	
 	@GetMapping()
-	private ResponseEntity<Iterable<Carro>> get() {
+	private ResponseEntity get() {
 		return ResponseEntity.ok(carroService.getCarros());//se passar um obj pra dentro do Ok nao precisa o .build()
 		//return new ResponseEntity<>(carroService.getCarros(),HttpStatus.OK);
 		
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Carro> getById(@PathVariable Long id){
-		Optional<Carro> carro = carroService.getCarroById(id);
+	public ResponseEntity<CarroDTO> getById(@PathVariable Long id){
+		Optional<CarroDTO> carro = carroService.getCarroById(id);
 		
 		return carro.map(ResponseEntity::ok)//-> carro.map(c -> ResponseEntity.ok(c))
 				.orElse(ResponseEntity.notFound().build());
@@ -57,13 +58,14 @@ public class CarrosController {
 	
 	@GetMapping("/tipo/{tipo}")
 	public ResponseEntity getCarrosByTipo(@PathVariable String tipo){
-		List<Carro> carros = carroService.getCarrosByTipo(tipo);
+		List<CarroDTO> carros = carroService.getCarrosByTipo(tipo);
 		return carros.isEmpty() ? 
 				ResponseEntity.noContent().build() :
-					ResponseEntity.ok(carros);
+					ResponseEntity.ok(carros);//se passar um obj pra dentro do Ok nao precisa o .build()
 	}
 		
-		
+	
+	
 		
 	
 	@PostMapping
@@ -74,7 +76,7 @@ public class CarrosController {
 	
 	@PutMapping("/{id}")
 	public String putCarro(@PathVariable Long id,  @RequestBody Carro carro) {//-> @RequestBody sem ele resultado da NULL
-		Carro c = carroService.upDateCarro(id, carro);
+		CarroDTO c = carroService.upDateCarro(id, carro);
 		return "Atualizado com sucesso " + c.getId();
 	}
 	
