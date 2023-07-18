@@ -2,6 +2,7 @@ package com.hbdev.carrossb.api;
 
 
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.hbdev.carrossb.domain.Carro;
 import com.hbdev.carrossb.domain.CarroDTO;
@@ -38,7 +40,7 @@ public class CarroController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<CarroDTO> getById(@PathVariable Long id){
-		Optional<CarroDTO> carro = carroService.getCarroById(id);
+		Optional<CarroDTO> carro = carroService.getById(id);
 		
 		return carro.map(ResponseEntity::ok)//-> carro.map(c -> ResponseEntity.ok(c))
 				.orElse(ResponseEntity.notFound().build());
@@ -69,21 +71,43 @@ public class CarroController {
 		
 	
 	@PostMapping()
-	public String postCarro(@RequestBody Carro carro) {//-> @RequestBody sem ele resultado da NULL
-		Carro c = carroService.saveCarro(carro);
-		return "Carro Salvo com sucesso: " + c.getId();
+	public ResponseEntity post(@RequestBody Carro carro) {//-> @RequestBody sem ele resultado da NULL
+		try {
+			CarroDTO c = carroService.insert(carro);
+			
+			URI location = getURI(c.getId());
+			return ResponseEntity.created(null).build();
+		}catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+			
+		}
 	}
 	
+	
+	private URI getURI(Long id) {
+		return  ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(id).toUri();
+	}
+	
+	
+	
+	
 	@PutMapping("/{id}")
-	public String putCarro(@PathVariable Long id,  @RequestBody Carro carro) {//-> @RequestBody sem ele resultado da NULL
-		CarroDTO c = carroService.upDateCarro(id, carro);
-		return "Atualizado com sucesso " + c.getId();
+	public ResponseEntity putCarro(@PathVariable Long id,  @RequestBody Carro carro) {//-> @RequestBody sem ele resultado da NULL
+		carro.setId(id);
+		CarroDTO c = carroService.upDateCarro(carro, id);
+		return c != null ?
+				ResponseEntity.ok(c) :
+					ResponseEntity.notFound().build();
+		
+		
+		
 	}
 	
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public void delete(@PathVariable Long id) {
-		carroService.deleteByid(id);
+		carroService.delete(id);
 		
 	}
 	

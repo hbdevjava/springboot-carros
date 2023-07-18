@@ -21,7 +21,7 @@ public class CarroService {
         return list;
     }
 
-    public Optional<CarroDTO> getCarroById(Long id) {
+    public Optional<CarroDTO> getById(Long id) {
         Optional<Carro> carro = carroRepository.findById(id);
         return carroRepository.findById(id).map(c -> CarroDTO.create(c));
     }
@@ -31,33 +31,43 @@ public class CarroService {
         		.collect(Collectors.toList());
     }
 
-    public Carro saveCarro(Carro carro) {
-       return carroRepository.save(carro);
+    public CarroDTO insert(Carro carro) {
+    	Assert.isNull(carro.getId(), "Nao é Possivel Inserir o registro");
+    	//NAO PODE SER NULL -> Assert.noNull
+       return CarroDTO.create(carroRepository.save(carro)); // AQUI ELE CONVERTE O CARRO SALVO PARA CARRO DTO                  
     }
 
-    public CarroDTO upDateCarro(Long id, Carro carro) {
+    public CarroDTO upDateCarro(Carro carro, Long id) {
 		Assert.notNull(id, "Nao é Possivel Atualizar o registro");
 
-		Optional<CarroDTO> optional = getCarroById(id);
+		//PROCURA O CARRO NO BD
+		Optional<Carro> optional = carroRepository.findById(id);
 		if (optional.isPresent()) {
-			CarroDTO novoCarro = optional.get();
+			Carro novoCarro = optional.get();
+			
+			//COPIA OS ATRIBUTOS DO VEICULO
 			novoCarro.setName(carro.getName());
 			novoCarro.setTipo(carro.getTipo());
 			System.out.println("Carro id: " + novoCarro.getId());
-			return novoCarro;
+			
+			//ATUALIZA O CARRO
+			carroRepository.save(novoCarro);
+			
+			return CarroDTO.create(novoCarro);
 		}else {
-			throw new RuntimeException("Nao é Possivel Atualizar o registro");
+			return null;
+			//throw new RuntimeException("Nao é Possivel Atualizar o registro");
 		}
 
 
 	}
 
-    public void  deleteByid(Long id) {
-    	Optional<CarroDTO> optional = getCarroById(id);
-		if (optional.isPresent()) {
+    public boolean  delete(Long id) {
+		if (getById(id).isPresent()) {
     		carroRepository.deleteById(id);
+    		return true;
 		}
-       
+       return false;
 }
 	
     
