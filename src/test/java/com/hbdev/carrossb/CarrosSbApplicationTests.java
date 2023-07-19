@@ -25,14 +25,13 @@ class CarrosSbApplicationTests {
 	@Test
 	public void testSave() {
 		Carro carro = new Carro();
-        carro.setName("Ferrari");
+        carro.setName("Poshi");
         carro.setTipo("esportivos");
        
 
         CarroDTO c = carroService.insert(carro);
 
         assertNotNull(c);
-
         Long id = c.getId();
         assertNotNull(id);
 
@@ -41,14 +40,14 @@ class CarrosSbApplicationTests {
         assertTrue(op.isPresent());
 
         c = op.get();
-        assertEquals("Ferrari",c.getName());
-        assertEquals("esportivos",c.getTipo());
+        assertEquals("Poshi",c.getName());
+       assertEquals("esportivos",c.getTipo());
 
         // Deletar o objeto
         carroService.delete(id);
 
         // Verificar se deletou
-        assertFalse(carroService.getById(id).isPresent());
+       assertFalse(carroService.getById(id).isPresent());
 
 	}
 
@@ -57,14 +56,21 @@ class CarrosSbApplicationTests {
 		
 		List<CarroDTO> carros = carroService.getCarros();
 		
-		
-		
-		
-		
-		
-		
-		
+		assertEquals(30, carros.size());
 		
 	}
+	
+//	@Test
+//	public void testget() {
+//		
+//		Optional<CarroDTO> op = carroService.getById(1L);
+//		
+//		assertTrue(op.isPresent());
+//		CarroDTO c = op.get();
+//		
+//		assertEquals("Camaro SS 1969", c.getName());
+//		
+//		
+//	}
 
 }

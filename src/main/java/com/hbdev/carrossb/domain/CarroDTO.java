@@ -16,6 +16,8 @@ public class CarroDTO {
 	private String tipo;
 	
 	
+	
+	
 	public static CarroDTO create(Carro carro) {
 		ModelMapper modelMapper = new ModelMapper();
 		return modelMapper.map(carro, CarroDTO.class);

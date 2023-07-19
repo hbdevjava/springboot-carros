@@ -62,12 +62,10 @@ public class CarroService {
 
 	}
 
-    public boolean  delete(Long id) {
-		if (getById(id).isPresent()) {
-    		carroRepository.deleteById(id);
-    		return true;
+    public void delete(Long id) {
+			carroRepository.deleteById(id);
 		}
-       return false;
+       
 }
 	
     
@@ -97,4 +95,4 @@ public class CarroService {
 	
 	
 	
-}
+
